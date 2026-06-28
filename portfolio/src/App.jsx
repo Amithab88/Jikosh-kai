@@ -38,7 +38,7 @@ function FadeIn({ children, delay = 0, dir = "up", className = "" }) {
 function BrandIcon({ slug, hex, size = 20, alt = "" }) {
   return (
     <img
-      src={`https://cdn.simpleicons.org/${slug}/${hex}`}
+      src={`https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/${slug}.svg`}
       alt={alt || slug}
       width={size}
       height={size}
@@ -225,16 +225,19 @@ function App() {
   return (
     <div className="App">
 
-      {/* HEADER */}
+      {/* HEADER — floating pill */}
       <header className="header">
         <div className="header-logo">Amithab</div>
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
           {menuOpen ? <Icon.Close /> : <Icon.Menu />}
         </button>
         <nav className={`nav ${menuOpen ? "nav-open" : ""}`}>
-          {navLinks.map((l) => (
-            <a key={l} href={`#${l.toLowerCase().replace(/\s+/g, "-")}`} onClick={() => setMenuOpen(false)}>{l}</a>
-          ))}
+          <a href="#home"         onClick={() => setMenuOpen(false)}>Home</a>
+          <a href="#profile"      onClick={() => setMenuOpen(false)}>Profile</a>
+          <a href="#toolkit"      onClick={() => setMenuOpen(false)}>Skills</a>
+          <a href="#case-studies" onClick={() => setMenuOpen(false)}>Work</a>
+          <a href="#journey"      onClick={() => setMenuOpen(false)}>Timeline</a>
+          <a href="#contact"      onClick={() => setMenuOpen(false)}>Contact</a>
           <a href="/resume.pdf" className="nav-resume" download>Resume</a>
         </nav>
       </header>
@@ -250,18 +253,45 @@ function App() {
             <p className="hero-sub">Turning raw data into clear, actionable insight — with SQL, Python, and dashboards that tell the real story behind the numbers.</p>
           </FadeIn>
           <FadeIn delay={0.38}>
-            <div className="hero-actions">
-              <a href="#case-studies" className="btn-primary">View Case Studies</a>
-              <a href="/resume.pdf" className="btn-outline" download>Download Resume</a>
-            </div>
+            <a href="#contact" className="btn-primary hero-cta">Get in Touch</a>
           </FadeIn>
-          <FadeIn delay={0.44}>
-            <div className="hero-socials">
-              <a href={github}     target="_blank" rel="noreferrer">GitHub</a>
-              <a href={linkedin}   target="_blank" rel="noreferrer">LinkedIn</a>
-              <a href={hackerrank} target="_blank" rel="noreferrer">HackerRank</a>
-            </div>
-          </FadeIn>
+        </div>
+
+        {/* Tool logo strip — grayscale, logos only */}
+        <div className="hero-tools-strip">
+          <div className="hero-tools-track">
+            {[
+              { slug: "python",          alt: "Python"  },
+              { slug: "mysql",           alt: "MySQL"   },
+              { slug: "microsoftexcel",  alt: "Excel"   },
+              { slug: "powerbi",         alt: "Power BI"},
+              { slug: "pandas",          alt: "Pandas"  },
+              { slug: "numpy",           alt: "NumPy"   },
+              { slug: "streamlit",       alt: "Streamlit"},
+              { slug: "github",          alt: "GitHub"  },
+              { slug: "flask",           alt: "Flask"   },
+              { slug: "canva",           alt: "Canva"   },
+              /* duplicate for seamless loop */
+              { slug: "python",          alt: "Python"  },
+              { slug: "mysql",           alt: "MySQL"   },
+              { slug: "microsoftexcel",  alt: "Excel"   },
+              { slug: "powerbi",         alt: "Power BI"},
+              { slug: "pandas",          alt: "Pandas"  },
+              { slug: "numpy",           alt: "NumPy"   },
+              { slug: "streamlit",       alt: "Streamlit"},
+              { slug: "github",          alt: "GitHub"  },
+              { slug: "flask",           alt: "Flask"   },
+              { slug: "canva",           alt: "Canva"   },
+            ].map((t, i) => (
+              <img
+                key={i}
+                src={`https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/${t.slug}.svg`}
+                alt={t.alt}
+                className="hero-tool-logo"
+                loading="lazy"
+              />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -352,58 +382,74 @@ function App() {
           <h2 className="section-title">Contact</h2>
           <p className="contact-intro">Open to Data Analyst internship opportunities and collaborations. Reach out — I'd love to talk data.</p>
         </FadeIn>
-        <FadeIn delay={0.1}>
-          <div className="terminal-card">
-            <div className="terminal-bar">
-              <div className="terminal-dots">
-                <span className="dot dot-red" />
-                <span className="dot dot-yellow" />
-                <span className="dot dot-green" />
+        <div className="contact-layout">
+
+          {/* Left — email form */}
+          <FadeIn dir="left" delay={0.1}>
+            <form
+              className="contact-form"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const fd = new FormData(e.target);
+                fd.append("access_key", "YOUR_WEB3FORMS_ACCESS_KEY");
+                const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: fd });
+                const r = await res.json();
+                if (r.success) { alert("Message sent — thank you!"); e.target.reset(); }
+                else { alert("Something went wrong. Please try again."); }
+              }}
+            >
+              <h3 className="form-heading">Send me a message</h3>
+              <div className="form-row">
+                <input type="text"  name="name"  placeholder="Your name"  required />
+                <input type="email" name="email" placeholder="Your email" required />
               </div>
-              <span className="terminal-filename">contact_info.json</span>
+              <textarea name="message" placeholder="Your message..." rows="5" required />
+              <button type="submit" className="btn-primary form-submit">Send Message</button>
+            </form>
+          </FadeIn>
+
+          {/* Right — slim terminal, 4 rows only */}
+          <FadeIn dir="right" delay={0.15}>
+            <div className="terminal-card">
+              <div className="terminal-bar">
+                <div className="terminal-dots">
+                  <span className="dot dot-red" />
+                  <span className="dot dot-yellow" />
+                  <span className="dot dot-green" />
+                </div>
+                <span className="terminal-filename">contact_info.json</span>
+              </div>
+              <div className="terminal-body">
+                <table className="json-table">
+                  <tbody>
+                    {[
+                      { key: "Email",         val: email,                       href: `mailto:${email}`, iconEl: <Icon.Mail /> },
+                      { key: "GitHub",        val: "github.com/Amithab88",      href: github,            iconEl: <BrandIcon slug="github" hex="181717" size={16} /> },
+                      { key: "LinkedIn",      val: "linkedin.com/in/amithab87", href: linkedin,          iconEl: <svg width="16" height="16" viewBox="0 0 24 24" fill="#0077B5"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> },
+                      { key: "Response Time", val: "Usually within 24 hours",  href: null,              iconEl: <Icon.Clock /> },
+                    ].map(({ key, val, href, iconEl }) => (
+                      <tr key={key} className="json-row">
+                        <td className="json-key">
+                          <span className="json-key-inner">
+                            <span className="json-row-icon">{iconEl}</span>
+                            {key}
+                          </span>
+                        </td>
+                        <td className="json-val">
+                          {href
+                            ? <a href={href} target={href.startsWith("mailto") ? undefined : "_blank"} rel="noreferrer">{val}</a>
+                            : <span>{val}</span>
+                          }
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div className="terminal-body">
-              <table className="json-table">
-                <tbody>
-                  {[
-                    { key: "Email",         val: email,                        href: `mailto:${email}`,  iconEl: <Icon.Mail /> },
-                    { key: "GitHub",        val: "github.com/Amithab88",       href: github,              iconEl: <BrandIcon slug="github" hex="181717" size={16} /> },
-                    { key: "LinkedIn",      val: "linkedin.com/in/amithab87",  href: linkedin,            iconEl: <BrandIcon slug="linkedin" hex="0077B5" size={16} /> },
-                    { key: "HackerRank",    val: "h242430101",                 href: hackerrank,          iconEl: <BrandIcon slug="hackerrank" hex="2EC866" size={16} /> },
-                    { key: "Location",      val: "Coimbatore, Tamil Nadu, India", href: null,             iconEl: <Icon.MapPin /> },
-                    { key: "Response Time", val: "Usually within 24 hours",   href: null,                iconEl: <Icon.Clock /> },
-                  ].map(({ key, val, href, iconEl }) => (
-                    <tr key={key} className="json-row">
-                      <td className="json-key">
-                        <span className="json-key-inner">
-                          <span className="json-row-icon">{iconEl}</span>
-                          {key}
-                        </span>
-                      </td>
-                      <td className="json-val">
-                        {href
-                          ? <a href={href} target={href.startsWith("mailto") ? undefined : "_blank"} rel="noreferrer">{val}</a>
-                          : <span>{val}</span>
-                        }
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="terminal-footer">
-              <a href={github}     target="_blank" rel="noreferrer" className="tsocial-link">
-                <BrandIcon slug="github"     hex="181717" size={20} alt="GitHub" />    GitHub
-              </a>
-              <a href={linkedin}   target="_blank" rel="noreferrer" className="tsocial-link">
-                <BrandIcon slug="linkedin"   hex="0077B5" size={20} alt="LinkedIn" />  LinkedIn
-              </a>
-              <a href={hackerrank} target="_blank" rel="noreferrer" className="tsocial-link">
-                <BrandIcon slug="hackerrank" hex="2EC866" size={20} alt="HackerRank" />HackerRank
-              </a>
-            </div>
-          </div>
-        </FadeIn>
+          </FadeIn>
+
+        </div>
       </section>
 
       <footer className="footer">
