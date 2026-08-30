@@ -74,23 +74,24 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="section sec-contact">
-      {/* Full-bleed night scene background */}
-      <div
-        className="contact-bg-scene"
-        style={{ backgroundImage: `url(${contactNight})` }}
-        aria-hidden="true"
-      />
-      {/* Layered overlays — sky darkens left (content), lightens right (moonlight) */}
-      <div className="contact-bg-overlay" aria-hidden="true" />
+    <section id="contact" className="section sec-dark sec-contact">
+      <div className="contact-frame">
+        {/* Full-bleed night scene background with matching aspect ratio */}
+        <div
+          className="contact-bg-scene"
+          style={{ backgroundImage: `url(${contactNight})` }}
+          aria-hidden="true"
+        />
+        {/* Layered overlays — sky darkens left (content), lightens right (moonlight) */}
+        <div className="contact-bg-overlay" aria-hidden="true" />
 
-      {/* Content grid sits above the background */}
-      <div className="contact-content-grid">
-        {/* Left — contact info floats over the dark forest/tree side */}
-        <Slide dir="left" className="contact-dark-panel">
-          <span className="sec-label-pill">
-            Contact <span className="kanji-tag">連絡</span>
-          </span>
+        {/* Content grid sits above the background */}
+        <div className="contact-content-grid">
+          {/* Left — contact info floats over the dark forest/tree side */}
+          <Slide dir="left" className="contact-dark-panel">
+            <span className="sec-label-pill">
+              Contact <span className="kanji-tag">連絡</span>
+            </span>
 
           <h2 className="contact-big-title">
             Let&apos;s talk
@@ -160,9 +161,8 @@ export function Contact() {
               <textarea
                 name="message"
                 placeholder="Your message..."
-                rows="5"
-                required
                 className="form-input form-textarea"
+                rows="3"
               />
               <button
                 type="submit"
@@ -185,6 +185,7 @@ export function Contact() {
             </form>
           </div>
         </Slide>
+      </div>
       </div>
     </section>
   );
